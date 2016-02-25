@@ -1,5 +1,29 @@
 // example: https://github.com/lydell/dotfiles/blob/master/.vimfx/config.js
 
+// helper functions
+let set = (pref, valueOrFunction) => {
+    let value = typeof valueOrFunction === 'function'
+        ? valueOrFunction(vimfx.getDefault(pref))
+        : valueOrFunction
+    vimfx.set(pref, value)
+}
+
+let map = (shortcuts, command, custom=false) => {
+    vimfx.set(`${custom ? 'custom.' : ''}mode.normal.${command}`, shortcuts)
+}
+
+// options
+set('prevent_autofocus', true)
+set('hints_sleep', -1)
+set('prev_patterns', v => `[上前]\\s*一?\\s*[页张个篇章頁] ${v}`)
+set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
+
+// shortcuts
+map('', 'window_new')
+map('w', 'tab_select_previous')
+map('e', 'tab_select_next')
+
+// commands
 vimfx.addCommand({
     name: 'search_selected_text',
     description: 'Search for the selected text'
@@ -13,6 +37,8 @@ vimfx.addCommand({
     messageManager.addMessageListener('VimFx-config:selection', callback)
     messageManager.sendAsyncMessage('VimFx-config:getSelection')
 })
+map('S', 'stop')
+map('s', 'search_selected_text', true)
 
 vimfx.addCommand({
     name: 'goto_addons',
@@ -20,6 +46,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     vim.window.BrowserOpenAddonsMgr()
 })
+map(',a', 'goto_addons', true)
 
 vimfx.addCommand({
     name: 'goto_downloads',
@@ -27,6 +54,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     vim.window.gBrowser.selectedTab = vim.window.gBrowser.addTab('about:downloads')
 })
+map(',d', 'goto_downloads', true)
 
 let bootstrap = () => {
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
@@ -48,7 +76,6 @@ let bootstrap = () => {
         PlacesUtils.keywords.insert(element)
     })
 }
-
 vimfx.addCommand({
     name: 'bootstrap',
     description: 'Bootstrap',
@@ -56,29 +83,4 @@ vimfx.addCommand({
     vim.notify("Bootstrapping...")
     bootstrap()
 })
-
-let map = (shortcuts, command, custom=false) => {
-    vimfx.set(`${custom ? 'custom.' : ''}mode.normal.${command}`, shortcuts)
-}
-
-map('', 'window_new')
-map('w', 'tab_select_previous')
-map('e', 'tab_select_next')
-
-map('S', 'stop')
-map('s', 'search_selected_text', true)
-map(',a', 'goto_addons', true)
-map(',d', 'goto_downloads', true)
 map('zb', 'bootstrap', true)
-
-let set = (pref, valueOrFunction) => {
-    let value = typeof valueOrFunction === 'function'
-        ? valueOrFunction(vimfx.getDefault(pref))
-        : valueOrFunction
-    vimfx.set(pref, value)
-}
-
-set('prevent_autofocus', true)
-set('hints_sleep', -1)
-set('prev_patterns', v => `[上前]\\s*一?\\s*[页张个篇章頁] ${v}`)
-set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
