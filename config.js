@@ -1,6 +1,20 @@
 // example: https://github.com/lydell/dotfiles/blob/master/.vimfx/config.js
 
 vimfx.addCommand({
+    name: 'search_selected_text',
+    description: 'Search for the selected text'
+}, ({vim}) => {
+    let {messageManager} = vim.window.gBrowser.selectedBrowser
+    let callback = ({data: {selection}}) => {
+        messageManager.removeMessageListener('VimFx-config:selection', callback)
+        let inTab = true // Change to `false` if you’d like to search in current tab.
+        vim.window.BrowserSearch.loadSearch(selection, inTab)
+    }
+    messageManager.addMessageListener('VimFx-config:selection', callback)
+    messageManager.sendAsyncMessage('VimFx-config:getSelection')
+})
+
+vimfx.addCommand({
     name: 'goto_addons',
     description: 'Addons',
 }, ({vim}) => {
@@ -51,6 +65,8 @@ map('', 'window_new')
 map('w', 'tab_select_previous')
 map('e', 'tab_select_next')
 
+map('S', 'stop')
+map('s', 'search_selected_text', true)
 map(',a', 'goto_addons', true)
 map(',d', 'goto_downloads', true)
 map('zb', 'bootstrap', true)

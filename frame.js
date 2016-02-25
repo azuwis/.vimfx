@@ -1,2 +1,4 @@
-// If you add custom commands that access web page content, put their "frame
-// script code" here.
+addMessageListener('VimFx-config:getSelection', ({data: {exampleValue}}) => {
+    let selection = content.getSelection().toString()
+    sendAsyncMessage('VimFx-config:selection', {selection})
+})
