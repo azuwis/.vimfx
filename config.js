@@ -59,7 +59,6 @@ map(',d', 'goto_downloads', true)
 let bootstrap = () => {
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
-
     let search_engines = [
         {keyword: 'g', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
         {keyword: 'gl', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
@@ -71,7 +70,6 @@ let bootstrap = () => {
         {keyword: 'dfl', url: 'https://packages.debian.org/sid/all/%s/filelist'},
         {keyword: 'db', url: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%s'},
     ]
-
     search_engines.forEach((element, index, array) => {
         PlacesUtils.keywords.insert(element)
     })
