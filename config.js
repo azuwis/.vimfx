@@ -59,6 +59,19 @@ map(',d', 'goto_downloads', true)
 let bootstrap = () => {
     // hide default search engines except google
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
+    // set font for different OSes
+    let os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS
+    let prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch)
+    switch (os) {
+    case 'Darwin':
+        prefs.setCharPref('font.name.monospace.x-western', 'Menlo')
+        break
+    case 'WINNT':
+        prefs.setCharPref('font.name.monospace.zh-CN', 'Consolas')
+        prefs.setCharPref('font.name.sans-serif.zh-CN', '微软雅黑')
+        prefs.setCharPref('font.name.serif.zh-CN', '微软雅黑')
+        break
+    }
     // add custom search engine keywords
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
