@@ -59,6 +59,7 @@ map(',d', 'goto_downloads', true)
 let bootstrap = () => {
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "Preferences", "resource://gre/modules/Preferences.jsm")
+    XPCOMUtils.defineLazyModuleGetter(this, "AddonManager", "resource://gre/modules/AddonManager.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
     // set font for different OSes
     let os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS
@@ -72,6 +73,27 @@ let bootstrap = () => {
         Preferences.set('font.name.serif.zh-CN', '微软雅黑')
         break
     }
+    // install addons
+    let addons = [
+        {id: 'https-everywhere@eff.org', url: 'https-everywhere'},
+        {id: 'uBlock0@raymondhill.net', url: 'ublock-origin'},
+        {id: 'VimFx@akhodakivskiy.github.com', url: 'vimfx'},
+        {id: 'ClassicThemeRestorer@ArisT2Noia4dev', url: 'classicthemerestorer'},
+        {id: 'thefoxonlybetter@quicksaver', url: 'the-fox-only-better'}
+    ]
+    addons.forEach((element, index, array) => {
+        AddonManager.getAddonByID(element.id, (addon) => {
+            if(!addon) {
+                let url = element.url
+                if(!url.startsWith('https://')) {
+                    url = 'https://addons.mozilla.org/firefox/downloads/latest/' + url
+                }
+                AddonManager.getInstallForURL(url, (aInstall) => {
+                    aInstall.install()
+                }, "application/x-xpinstall")
+            }
+        })
+    })
     // hide default search engines except google
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
     // add custom search engine keywords
