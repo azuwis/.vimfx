@@ -1,8 +1,5 @@
 // example: https://github.com/lydell/dotfiles/blob/master/.vimfx/config.js
 
-Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
-XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
-
 // helper functions
 let set = (pref, valueOrFunction) => {
     let value = typeof valueOrFunction === 'function'
@@ -61,6 +58,8 @@ map(',d', 'goto_downloads', true)
 
 let bootstrap = () => {
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
+    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
+    XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
     let search_engines = [
         {keyword: 'g', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
         {keyword: 'gl', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
