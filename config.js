@@ -57,7 +57,9 @@ vimfx.addCommand({
 map(',d', 'goto_downloads', true)
 
 let bootstrap = () => {
+    // hide default search engines except google
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
+    // add custom search engine keywords
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
     let search_engines = [
