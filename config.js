@@ -57,24 +57,24 @@ vimfx.addCommand({
 map(',d', 'goto_downloads', true)
 
 let bootstrap = () => {
+    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
+    XPCOMUtils.defineLazyModuleGetter(this, "Preferences", "resource://gre/modules/Preferences.jsm")
+    XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
     // hide default search engines except google
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
     // set font for different OSes
     let os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS
-    let prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch)
     switch (os) {
     case 'Darwin':
-        prefs.setCharPref('font.name.monospace.x-western', 'Menlo')
+        Preferences.set('font.name.monospace.x-western', 'Menlo')
         break
     case 'WINNT':
-        prefs.setCharPref('font.name.monospace.zh-CN', 'Consolas')
-        prefs.setCharPref('font.name.sans-serif.zh-CN', '微软雅黑')
-        prefs.setCharPref('font.name.serif.zh-CN', '微软雅黑')
+        Preferences.set('font.name.monospace.zh-CN', 'Consolas')
+        Preferences.set('font.name.sans-serif.zh-CN', '微软雅黑')
+        Preferences.set('font.name.serif.zh-CN', '微软雅黑')
         break
     }
     // add custom search engine keywords
-    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
-    XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
     let search_engines = [
         {keyword: 'g', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
         {keyword: 'gl', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
