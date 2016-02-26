@@ -60,6 +60,7 @@ vimfx.addCommand({
 map(',d', 'goto_downloads', true)
 
 let bootstrap = () => {
+    Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
     let search_engines = [
         {keyword: 'g', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
         {keyword: 'gl', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
