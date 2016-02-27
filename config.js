@@ -37,8 +37,7 @@ vimfx.addCommand({
     messageManager.addMessageListener('VimFx-config:selection', callback)
     messageManager.sendAsyncMessage('VimFx-config:getSelection')
 })
-map('S', 'stop')
-map('s', 'search_selected_text', true)
+map(',s', 'search_selected_text', true)
 
 vimfx.addCommand({
     name: 'goto_addons',
