@@ -149,6 +149,7 @@ vimfx.addCommand({
         bootstrap()
     } catch (error) {
         vim.notify("Bootstrap failed")
+        console.error(error)
         return
     }
     vim.notify("Bootstrap succeeded")
