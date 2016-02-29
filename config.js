@@ -59,7 +59,8 @@ vimfx.addCommand({
     name: 'goto_downloads',
     description: 'Downloads',
 }, ({vim}) => {
-    vim.window.gBrowser.selectedTab = vim.window.gBrowser.addTab('about:downloads')
+    // vim.window.document.getElementById('downloads-button').click()
+    vim.window.switchToTabHavingURI('about:downloads', true)
 })
 map(',d', 'goto_downloads', true)
 
