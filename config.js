@@ -89,6 +89,7 @@ let bootstrap = () => {
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "Preferences", "resource://gre/modules/Preferences.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "AddonManager", "resource://gre/modules/AddonManager.jsm")
+    XPCOMUtils.defineLazyModuleGetter(this, "NetUtil", "resource://gre/modules/NetUtil.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
     // set font for different OSes
     let os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS
@@ -127,17 +128,26 @@ let bootstrap = () => {
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
     // add custom search engine keywords
     let search_engines = [
-        {keyword: 'g', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
-        {keyword: 'gl', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
-        {keyword: 'ddg', url: 'https://duckduckgo.com/?q=%s&kf=fw&kj=b2&ks=t&kw=n&ka=g&ko=s&kt=Lucida%20Grande&km=m&k1=-1&kv=1'},
-        {keyword: 'w', url: 'https://en.wikipedia.org/wiki/Special:Search?search=%s'},
-        {keyword: 't', url: 'https://twitter.com/search/%s'},
-        {keyword: 'd', url: 'https://packages.debian.org/search?keywords=%s'},
-        {keyword: 'df', url: 'https://packages.debian.org/search?searchon=contents&mode=filename&keywords=%s'},
-        {keyword: 'dfl', url: 'https://packages.debian.org/sid/all/%s/filelist'},
-        {keyword: 'db', url: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%s'},
+        {keyword: 'g', title:'Google Search', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
+        {keyword: 'gl', title:'Google Lucky', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
+        {keyword: 'ddg', title:'Duckduckgo Search', url: 'https://duckduckgo.com/?q=%s&kf=fw&kj=b2&ks=t&kw=n&ka=g&ko=s&kt=Lucida%20Grande&km=m&k1=-1&kv=1'},
+        {keyword: 'w', title: 'Wikipedia Search', url: 'https://en.wikipedia.org/wiki/Special:Search?search=%s'},
+        {keyword: 't', title: 'Twitter Search', url: 'https://twitter.com/search/%s'},
+        {keyword: 'd', title: 'Debian Package Search', url: 'https://packages.debian.org/search?keywords=%s'},
+        {keyword: 'df', title: 'Debian File Search', url: 'https://packages.debian.org/search?searchon=contents&mode=filename&keywords=%s'},
+        {keyword: 'dfl', title: 'Debian File List', url: 'https://packages.debian.org/sid/all/%s/filelist'},
+        {keyword: 'db', title: 'Debian Bug Search', url: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%s'},
     ]
+    let bookmarks = PlacesUtils.bookmarks
     search_engines.forEach((element, index, array) => {
+        let uri = NetUtil.newURI(element.url, null, null)
+        if (!bookmarks.isBookmarked(uri)) {
+            bookmarks.insertBookmark(
+                bookmarks.unfiledBookmarksFolder,
+                uri,
+                bookmarks.DEFAULT_INDEX,
+                element.title)
+        }
         PlacesUtils.keywords.insert(element)
     })
 }
