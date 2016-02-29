@@ -1,6 +1,8 @@
 // example: https://github.com/lydell/dotfiles/blob/master/.vimfx/config.js
 
 // helper functions
+let {commands} = vimfx.modes.normal
+
 let set = (pref, valueOrFunction) => {
     let value = typeof valueOrFunction === 'function'
         ? valueOrFunction(vimfx.getDefault(pref))
@@ -63,6 +65,17 @@ vimfx.addCommand({
     vim.window.switchToTabHavingURI('about:downloads', true)
 })
 map(',d', 'goto_downloads', true)
+
+vimfx.addCommand({
+    name: 'search_tabs',
+    description: 'Search tabs',
+    category: 'location',
+    order: commands.focus_location_bar.order + 1,
+}, (args) => {
+    commands.focus_location_bar.run(args)
+    args.vim.window.gURLBar.value = '% '
+})
+map(',t', 'search_tabs', true)
 
 vimfx.addCommand({
     name: 'restart',
