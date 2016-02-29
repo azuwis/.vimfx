@@ -48,6 +48,14 @@ vimfx.addCommand({
 map(',a', 'goto_addons', true)
 
 vimfx.addCommand({
+    name: 'goto_config',
+    description: 'Config',
+}, ({vim}) => {
+    vim.window.switchToTabHavingURI('about:config', true)
+})
+map(',c', 'goto_config', true)
+
+vimfx.addCommand({
     name: 'goto_downloads',
     description: 'Downloads',
 }, ({vim}) => {
