@@ -63,6 +63,14 @@ vimfx.addCommand({
 })
 map(',d', 'goto_downloads', true)
 
+vimfx.addCommand({
+    name: 'restart',
+    description: 'Restart',
+}, ({vim}) => {
+    Services.startup.quit(Services.startup.eRestart | Services.startup.eAttemptQuit)
+})
+map(',R', 'restart', true)
+
 let bootstrap = () => {
     Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
     XPCOMUtils.defineLazyModuleGetter(this, "Preferences", "resource://gre/modules/Preferences.jsm")
