@@ -145,7 +145,12 @@ vimfx.addCommand({
     name: 'bootstrap',
     description: 'Bootstrap',
 }, ({vim}) => {
-    vim.notify("Bootstrapping...")
-    bootstrap()
+    try {
+        bootstrap()
+    } catch (error) {
+        vim.notify("Bootstrap failed")
+        return
+    }
+    vim.notify("Bootstrap succeeded")
 })
 map('zb', 'bootstrap', true)
