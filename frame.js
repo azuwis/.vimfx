@@ -1,4 +1,4 @@
-addMessageListener('VimFx-config:getSelection', ({data: {exampleValue}}) => {
+vimfx.listen('getSelection', ({data}, callback) => {
     let selection = content.getSelection().toString()
-    sendAsyncMessage('VimFx-config:selection', {selection})
+    callback(selection)
 })

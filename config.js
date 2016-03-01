@@ -30,14 +30,10 @@ vimfx.addCommand({
     name: 'search_selected_text',
     description: 'Search for the selected text'
 }, ({vim}) => {
-    let {messageManager} = vim.window.gBrowser.selectedBrowser
-    let callback = ({data: {selection}}) => {
-        messageManager.removeMessageListener('VimFx-config:selection', callback)
+    vimfx.send(vim, 'getSelection', {}, selection => {
         let inTab = true // Change to `false` if you’d like to search in current tab.
         vim.window.BrowserSearch.loadSearch(selection, inTab)
-    }
-    messageManager.addMessageListener('VimFx-config:selection', callback)
-    messageManager.sendAsyncMessage('VimFx-config:getSelection')
+    })
 })
 map(',s', 'search_selected_text', true)
 
