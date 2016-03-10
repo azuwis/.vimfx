@@ -63,6 +63,20 @@ vimfx.addCommand({
 map(',d', 'goto_downloads', true)
 
 vimfx.addCommand({
+    name: 'mpv',
+    description: 'Mpv',
+}, ({vim}) => {
+    let file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile)
+    file.initWithPath("/usr/bin/mpv")
+    let process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess)
+    process.init(file)
+    let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
+    let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
+    process.runAsync(args, args.length)
+})
+map(',m', 'mpv', true)
+
+vimfx.addCommand({
     name: 'search_tabs',
     description: 'Search tabs',
     category: 'location',
