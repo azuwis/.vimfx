@@ -93,6 +93,19 @@ vimfx.addCommand({
 map(',t', 'search_tabs', true)
 
 vimfx.addCommand({
+    name: 'org_capture',
+    description: 'Capture the selected text using org-protocol'
+}, ({vim}) => {
+    vimfx.send(vim, 'getSelection', {}, selection => {
+        let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
+        let title = vim.window.document.title.replace(/ - \w+$/, '')
+        let org_url = `org-protocol://capture://b/${encodeURIComponent(url)}/${encodeURIComponent(title)}/${encodeURIComponent(selection)}`
+        exec('/usr/bin/emacsclient', [org_url])
+    })
+})
+map(',b', 'org_capture', true)
+
+vimfx.addCommand({
     name: 'restart',
     description: 'Restart',
 }, ({vim}) => {
