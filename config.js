@@ -142,8 +142,9 @@ let bootstrap = () => {
     //     })
     // })
     let disabled_addons = [
+        'firefox@getpocket.com',
+        'gmp-gmpopenh264',
         'loop@mozilla.org',
-        'gmp-gmpopenh264'
     ]
     disabled_addons.forEach((element) => {
         AddonManager.getAddonByID(element, (addon) => {
