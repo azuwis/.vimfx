@@ -134,6 +134,22 @@ let bootstrap = () => {
             }
         })
     })
+    // disable addons
+    // AddonManager.getAllAddons((addons) => {
+    //     console.log("List addons:")
+    //     addons.forEach((element) => {
+    //         console.log(JSON.stringify({name: element.name, id: element.id, disabled: element.userDisabled}))
+    //     })
+    // })
+    let disabled_addons = [
+        'loop@mozilla.org',
+        'gmp-gmpopenh264'
+    ]
+    disabled_addons.forEach((element) => {
+        AddonManager.getAddonByID(element, (addon) => {
+            addon.userDisabled = true
+        })
+    })
     // hide default search engines except google
     Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
     // add custom search engine keywords
