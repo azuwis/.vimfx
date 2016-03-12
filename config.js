@@ -14,6 +14,14 @@ let map = (shortcuts, command, custom=false) => {
     vimfx.set(`${custom ? 'custom.' : ''}mode.normal.${command}`, shortcuts)
 }
 
+let exec = (cmd, args) => {
+    let file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile)
+    file.initWithPath(cmd)
+    let process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess)
+    process.init(file)
+    process.runAsync(args, args.length)
+}
+
 // options
 set('prevent_autofocus', true)
 set('hints_sleep', -1)
@@ -66,13 +74,9 @@ vimfx.addCommand({
     name: 'mpv',
     description: 'Mpv',
 }, ({vim}) => {
-    let file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile)
-    file.initWithPath("/usr/bin/mpv")
-    let process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess)
-    process.init(file)
     let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
     let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
-    process.runAsync(args, args.length)
+    exec("/usr/bin/mpv", args)
 })
 map(',m', 'mpv', true)
 
