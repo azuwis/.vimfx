@@ -77,6 +77,7 @@ vimfx.addCommand({
     let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
     let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
     exec("/usr/bin/mpv", args)
+    vim.notify(`Mpv: ${url}`)
 })
 map(',m', 'mpv', true)
 
