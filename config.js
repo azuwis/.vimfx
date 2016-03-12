@@ -15,9 +15,9 @@ let map = (shortcuts, command, custom=false) => {
 }
 
 let exec = (cmd, args) => {
-    let file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile)
+    let file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsIFile)
     file.initWithPath(cmd)
-    let process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess)
+    let process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess)
     process.init(file)
     process.runAsync(args, args.length)
 }
@@ -76,7 +76,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
     let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
-    exec("/usr/bin/mpv", args)
+    exec('/usr/bin/mpv', args)
     vim.notify(`Mpv: ${url}`)
 })
 map(',m', 'mpv', true)
@@ -114,13 +114,13 @@ vimfx.addCommand({
 map(',R', 'restart', true)
 
 let bootstrap = () => {
-    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm")
-    XPCOMUtils.defineLazyModuleGetter(this, "Preferences", "resource://gre/modules/Preferences.jsm")
-    XPCOMUtils.defineLazyModuleGetter(this, "AddonManager", "resource://gre/modules/AddonManager.jsm")
-    XPCOMUtils.defineLazyModuleGetter(this, "NetUtil", "resource://gre/modules/NetUtil.jsm")
-    XPCOMUtils.defineLazyModuleGetter(this, "PlacesUtils", "resource://gre/modules/PlacesUtils.jsm")
+    Components.utils.import('resource://gre/modules/XPCOMUtils.jsm')
+    XPCOMUtils.defineLazyModuleGetter(this, 'Preferences', 'resource://gre/modules/Preferences.jsm')
+    XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager', 'resource://gre/modules/AddonManager.jsm')
+    XPCOMUtils.defineLazyModuleGetter(this, 'NetUtil', 'resource://gre/modules/NetUtil.jsm')
+    XPCOMUtils.defineLazyModuleGetter(this, 'PlacesUtils', 'resource://gre/modules/PlacesUtils.jsm')
     // set font for different OSes
-    let os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS
+    let os = Components.classes['@mozilla.org/xre/app-info;1'].getService(Components.interfaces.nsIXULRuntime).OS
     switch (os) {
     case 'Darwin':
         Preferences.set('font.name.monospace.x-western', 'Menlo')
@@ -148,13 +148,13 @@ let bootstrap = () => {
                 }
                 AddonManager.getInstallForURL(url, (aInstall) => {
                     aInstall.install()
-                }, "application/x-xpinstall")
+                }, 'application/x-xpinstall')
             }
         })
     })
     // disable addons
     // AddonManager.getAllAddons((addons) => {
-    //     console.log("List addons:")
+    //     console.log('List addons:')
     //     addons.forEach((element) => {
     //         console.log(JSON.stringify({name: element.name, id: element.id, disabled: element.userDisabled}))
     //     })
@@ -170,7 +170,7 @@ let bootstrap = () => {
         })
     })
     // hide default search engines except google
-    Services.search.getEngines().forEach((e) => {if(e.name!="Google") e.hidden = true})
+    Services.search.getEngines().forEach((e) => {if(e.name!='Google') e.hidden = true})
     // add custom search engine keywords
     let search_engines = [
         {keyword: 'g', title:'Google Search', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
@@ -203,10 +203,10 @@ vimfx.addCommand({
     try {
         bootstrap()
     } catch (error) {
-        vim.notify("Bootstrap failed")
+        vim.notify('Bootstrap failed')
         console.error(error)
         return
     }
-    vim.notify("Bootstrap succeeded")
+    vim.notify('Bootstrap succeeded')
 })
 map('zb', 'bootstrap', true)
