@@ -10,6 +10,21 @@ let set = (pref, valueOrFunction) => {
     vimfx.set(pref, value)
 }
 
+let toggle_css = (uri_string) => {
+    let nsIStyleSheetService = Components.classes['@mozilla.org/content/style-sheet-service;1']
+        .getService(Components.interfaces.nsIStyleSheetService)
+    let uri = Services.io.newURI(uri_string, null, null)
+    let method = nsIStyleSheetService.AUTHOR_SHEET
+    if (nsIStyleSheetService.sheetRegistered(uri, method)) {
+        nsIStyleSheetService.unregisterSheet(uri, method)
+    } else {
+        nsIStyleSheetService.loadAndRegisterSheet(uri, method)
+    }
+    // vimfx.on('shutdown', () => {
+    //     nsIStyleSheetService.unregisterSheet(uri, method)
+    // })
+}
+
 let map = (shortcuts, command, custom=false) => {
     vimfx.set(`${custom ? 'custom.' : ''}mode.normal.${command}`, shortcuts)
 }
@@ -69,6 +84,14 @@ vimfx.addCommand({
     vim.window.switchToTabHavingURI('about:downloads', true)
 })
 map(',d', 'goto_downloads', true)
+
+vimfx.addCommand({
+    name: 'midnight',
+    description: 'Midnight Surfing',
+}, ({vim}) => {
+    toggle_css(`${__dirname}/midnight.css`)
+})
+map(',n', 'midnight', true)
 
 vimfx.addCommand({
     name: 'mpv',
