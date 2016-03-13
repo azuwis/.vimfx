@@ -94,15 +94,28 @@ vimfx.addCommand({
 map(',n', 'midnight', true)
 
 vimfx.addCommand({
-    name: 'mpv',
-    description: 'Mpv',
+    name: 'mpv_current_href',
+    description: 'Mpv play focused href',
+}, (args) => {
+    let {vim} = args
+    vimfx.send(vim, 'getCurrentHref', null, href => {
+        let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
+        exec('/usr/bin/mpv', args)
+        vim.notify(`Mpv: ${href}`)
+    })
+})
+map('M', 'mpv_current_href', true)
+
+vimfx.addCommand({
+    name: 'mpv_current_tab',
+    description: 'Mpv play current tab',
 }, ({vim}) => {
     let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
     let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
     exec('/usr/bin/mpv', args)
     vim.notify(`Mpv: ${url}`)
 })
-map(',m', 'mpv', true)
+map(',m', 'mpv_current_tab', true)
 
 vimfx.addCommand({
     name: 'search_tabs',
