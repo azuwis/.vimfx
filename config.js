@@ -53,7 +53,7 @@ vimfx.addCommand({
     name: 'search_selected_text',
     description: 'Search for the selected text'
 }, ({vim}) => {
-    vimfx.send(vim, 'getSelection', {}, selection => {
+    vimfx.send(vim, 'getSelection', null, selection => {
         let inTab = true // Change to `false` if you’d like to search in current tab.
         vim.window.BrowserSearch.loadSearch(selection, inTab)
     })
