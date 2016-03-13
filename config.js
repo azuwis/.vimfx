@@ -99,6 +99,8 @@ vimfx.addCommand({
 }, (args) => {
     let {vim} = args
     vimfx.send(vim, 'getCurrentHref', null, href => {
+        if (!href)
+            href = vim.window.gBrowser.selectedBrowser.currentURI.spec
         let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
         exec('/usr/bin/mpv', args)
         vim.notify(`Mpv: ${href}`)
