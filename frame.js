@@ -11,7 +11,5 @@ vimfx.listen('getCurrentHref', (data, callback) => {
         if(a)
             href = a.href
     }
-    if (!href)
-        href = document.location.href
     callback(href)
 })

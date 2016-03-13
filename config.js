@@ -99,13 +99,13 @@ vimfx.addCommand({
 }, (args) => {
     let {vim} = args
     vimfx.send(vim, 'getCurrentHref', null, href => {
-        if (!href.match('^https?://')) {
+        if (href && href.match('^https?://')) {
+            let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
+            exec('/usr/bin/mpv', args)
+            vim.notify(`Mpv: ${href}`)
+        } else {
             vim.notify('Mpv: No link')
-            return
         }
-        let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
-        exec('/usr/bin/mpv', args)
-        vim.notify(`Mpv: ${href}`)
     })
 })
 map('v', 'mpv_current_href', true)
