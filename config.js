@@ -29,12 +29,12 @@ let map = (shortcuts, command, custom=false) => {
     vimfx.set(`${custom ? 'custom.' : ''}mode.normal.${command}`, shortcuts)
 }
 
-let exec = (cmd, args) => {
+let exec = (cmd, args, observer) => {
     let file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsIFile)
     file.initWithPath(cmd)
     let process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess)
     process.init(file)
-    process.runAsync(args, args.length)
+    process.runAsync(args, args.length, observer)
 }
 
 // options
@@ -98,10 +98,16 @@ vimfx.addCommand({
     description: 'Mpv play focused href',
 }, (args) => {
     let {vim} = args
+    let mpv_observer = {
+        observe: (subject, topic) => {
+            if (subject.exitValue !== 0)
+                vim.notify('Mpv: No video')
+        }
+    }
     vimfx.send(vim, 'getCurrentHref', null, href => {
         if (href && href.match('^https?://')) {
             let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
-            exec('/usr/bin/mpv', args)
+            exec('/usr/bin/mpv', args, mpv_observer)
             vim.notify(`Mpv: ${href}`)
         } else {
             vim.notify('Mpv: No link')
