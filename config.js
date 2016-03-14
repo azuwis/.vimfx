@@ -96,8 +96,7 @@ map(',n', 'midnight', true)
 vimfx.addCommand({
     name: 'mpv_current_href',
     description: 'Mpv play focused href',
-}, (args) => {
-    let {vim} = args
+}, ({vim}) => {
     let mpv_observer = {
         observe: (subject, topic) => {
             if (subject.exitValue !== 0)
