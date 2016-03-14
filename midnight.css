@@ -417,7 +417,7 @@ border: none !important;
 
 @-moz-document url(about:newtab) {
 
-window {background: #141414 !important;}
+* {background: #141414 !important;}
 
 #newtab-scrollbox {
 background-color: transparent !important;
