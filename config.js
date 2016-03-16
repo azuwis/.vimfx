@@ -29,9 +29,27 @@ let map = (shortcuts, command, custom=false) => {
     vimfx.set(`${custom ? 'custom.' : ''}mode.normal.${command}`, shortcuts)
 }
 
+let pathSearch = (bin) => {
+    let {OS} = Components.utils.import('resource://gre/modules/osfile.jsm')
+    if (OS.Path.split(bin).absolute)
+        return bin
+    let os = Components.classes['@mozilla.org/xre/app-info;1'].getService(Components.interfaces.nsIXULRuntime).OS
+    let pathListSep = (os == 'WINNT') ? ';' : ':'
+    let environment = Components.classes["@mozilla.org/process/environment;1"].getService(Components.interfaces.nsIEnvironment);
+    let dirs = environment.get("PATH").split(pathListSep)
+    let file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsIFile)
+    for (let dir of dirs) {
+        path = OS.Path.join(dir, bin)
+        file.initWithPath(path)
+        if (file.exists() && file.isFile() && file.isExecutable())
+            return path
+    }
+    return null
+}
+
 let exec = (cmd, args, observer) => {
     let file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsIFile)
-    file.initWithPath(cmd)
+    file.initWithPath(pathSearch(cmd))
     let process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess)
     process.init(file)
     process.runAsync(args, args.length, observer)
@@ -106,7 +124,7 @@ vimfx.addCommand({
     vimfx.send(vim, 'getFocusedHref', null, href => {
         if (href && href.match('^https?://')) {
             let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
-            exec('/usr/bin/mpv', args, mpv_observer)
+            exec('mpv', args, mpv_observer)
             vim.notify(`Mpv: ${href}`)
         } else {
             vim.notify('Mpv: No link')
@@ -121,7 +139,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
     let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
-    exec('/usr/bin/mpv', args)
+    exec('mpv', args)
     vim.notify(`Mpv: ${url}`)
 })
 map(',m', 'mpv_current_tab', true)
