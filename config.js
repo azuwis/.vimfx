@@ -163,7 +163,7 @@ vimfx.addCommand({
         let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
         let title = vim.window.document.title.replace(/ - \w+$/, '')
         let org_url = `org-protocol://capture://b/${encodeURIComponent(url)}/${encodeURIComponent(title)}/${encodeURIComponent(selection)}`
-        exec('/usr/bin/emacsclient', [org_url])
+        exec('emacsclient', [org_url])
     })
 })
 map(',b', 'org_capture', true)
