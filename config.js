@@ -1,5 +1,17 @@
 // example: https://github.com/lydell/dotfiles/blob/master/.vimfx/config.js
 
+const {classes: Cc, interfaces: Ci, utils: Cu} = Components
+const nsIEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
+const nsIStyleSheetService = Cc['@mozilla.org/content/style-sheet-service;1'].getService(Ci.nsIStyleSheetService)
+const nsIXULRuntime = Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULRuntime)
+const {OS} = Cu.import('resource://gre/modules/osfile.jsm')
+
+Cu.import('resource://gre/modules/XPCOMUtils.jsm')
+XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager', 'resource://gre/modules/AddonManager.jsm')
+XPCOMUtils.defineLazyModuleGetter(this, 'NetUtil', 'resource://gre/modules/NetUtil.jsm')
+XPCOMUtils.defineLazyModuleGetter(this, 'PlacesUtils', 'resource://gre/modules/PlacesUtils.jsm')
+XPCOMUtils.defineLazyModuleGetter(this, 'Preferences', 'resource://gre/modules/Preferences.jsm')
+
 // helper functions
 let {commands} = vimfx.modes.normal
 
@@ -11,8 +23,6 @@ let set = (pref, valueOrFunction) => {
 }
 
 let toggle_css = (uri_string) => {
-    let nsIStyleSheetService = Components.classes['@mozilla.org/content/style-sheet-service;1']
-        .getService(Components.interfaces.nsIStyleSheetService)
     let uri = Services.io.newURI(uri_string, null, null)
     let method = nsIStyleSheetService.AUTHOR_SHEET
     if (nsIStyleSheetService.sheetRegistered(uri, method)) {
@@ -30,16 +40,13 @@ let map = (shortcuts, command, custom=false) => {
 }
 
 let pathSearch = (bin) => {
-    let {OS} = Components.utils.import('resource://gre/modules/osfile.jsm')
     if (OS.Path.split(bin).absolute)
         return bin
-    let os = Components.classes['@mozilla.org/xre/app-info;1'].getService(Components.interfaces.nsIXULRuntime).OS
-    let pathListSep = (os == 'WINNT') ? ';' : ':'
-    let environment = Components.classes["@mozilla.org/process/environment;1"].getService(Components.interfaces.nsIEnvironment);
-    let dirs = environment.get("PATH").split(pathListSep)
-    let file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsIFile)
+    let pathListSep = (nsIXULRuntime.OS == 'WINNT') ? ';' : ':'
+    let dirs = nsIEnvironment.get("PATH").split(pathListSep)
+    let file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsIFile)
     for (let dir of dirs) {
-        path = OS.Path.join(dir, bin)
+        let path = OS.Path.join(dir, bin)
         file.initWithPath(path)
         if (file.exists() && file.isFile() && file.isExecutable())
             return path
@@ -48,9 +55,9 @@ let pathSearch = (bin) => {
 }
 
 let exec = (cmd, args, observer) => {
-    let file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsIFile)
+    let file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsIFile)
     file.initWithPath(pathSearch(cmd))
-    let process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess)
+    let process = Cc['@mozilla.org/process/util;1'].createInstance(Ci.nsIProcess)
     process.init(file)
     process.runAsync(args, args.length, observer)
 }
@@ -177,14 +184,8 @@ vimfx.addCommand({
 map(',R', 'restart', true)
 
 let bootstrap = () => {
-    Components.utils.import('resource://gre/modules/XPCOMUtils.jsm')
-    XPCOMUtils.defineLazyModuleGetter(this, 'Preferences', 'resource://gre/modules/Preferences.jsm')
-    XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager', 'resource://gre/modules/AddonManager.jsm')
-    XPCOMUtils.defineLazyModuleGetter(this, 'NetUtil', 'resource://gre/modules/NetUtil.jsm')
-    XPCOMUtils.defineLazyModuleGetter(this, 'PlacesUtils', 'resource://gre/modules/PlacesUtils.jsm')
     // set font for different OSes
-    let os = Components.classes['@mozilla.org/xre/app-info;1'].getService(Components.interfaces.nsIXULRuntime).OS
-    switch (os) {
+    switch (nsIXULRuntime.OS) {
     case 'Darwin':
         Preferences.set('font.name.monospace.x-western', 'Menlo')
         break
