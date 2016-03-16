@@ -4,11 +4,11 @@ vimfx.listen('getSelection', (data, callback) => {
 })
 
 vimfx.listen('getFocusedHref', (data, callback) => {
-    let document = content.document
+    let {document} = content
     let {href} = document.activeElement
     if (!href) {
         let a = document.querySelector('a:hover')
-        if(a)
+        if (a)
             href = a.href
     }
     callback(href)
