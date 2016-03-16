@@ -22,8 +22,8 @@ let set = (pref, valueOrFunction) => {
     vimfx.set(pref, value)
 }
 
-let toggle_css = (uri_string) => {
-    let uri = Services.io.newURI(uri_string, null, null)
+let toggleCss = (uriString) => {
+    let uri = Services.io.newURI(uriString, null, null)
     let method = nsIStyleSheetService.AUTHOR_SHEET
     if (nsIStyleSheetService.sheetRegistered(uri, method)) {
         nsIStyleSheetService.unregisterSheet(uri, method)
@@ -114,7 +114,7 @@ vimfx.addCommand({
     name: 'midnight',
     description: 'Midnight Surfing',
 }, ({vim}) => {
-    toggle_css(`${__dirname}/midnight.css`)
+    toggleCss(`${__dirname}/midnight.css`)
 })
 map(',n', 'midnight', true)
 
