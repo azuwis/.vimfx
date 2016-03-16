@@ -1,7 +1,7 @@
 // example: https://github.com/lydell/dotfiles/blob/master/.vimfx/config.js
 
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components
-const nsIEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
+const nsIEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment)
 const nsIStyleSheetService = Cc['@mozilla.org/content/style-sheet-service;1'].getService(Ci.nsIStyleSheetService)
 const nsIXULRuntime = Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULRuntime)
 const {OS} = Cu.import('resource://gre/modules/osfile.jsm')
