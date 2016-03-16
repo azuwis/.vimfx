@@ -103,7 +103,7 @@ vimfx.addCommand({
                 vim.notify('Mpv: No video')
         }
     }
-    vimfx.send(vim, 'getCurrentHref', null, href => {
+    vimfx.send(vim, 'getFocusedHref', null, href => {
         if (href && href.match('^https?://')) {
             let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
             exec('/usr/bin/mpv', args, mpv_observer)

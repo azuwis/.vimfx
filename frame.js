@@ -3,7 +3,7 @@ vimfx.listen('getSelection', (data, callback) => {
     callback(selection)
 })
 
-vimfx.listen('getCurrentHref', (data, callback) => {
+vimfx.listen('getFocusedHref', (data, callback) => {
     let document = content.document
     let {href} = document.activeElement
     if (!href) {
