@@ -216,13 +216,14 @@ let bootstrap = () => {
             }
         })
     })
-    // disable addons
+    // list addons
     // AddonManager.getAllAddons((addons) => {
     //     console.log('List addons:')
     //     addons.forEach((element) => {
     //         console.log(JSON.stringify({name: element.name, id: element.id, disabled: element.userDisabled}))
     //     })
     // })
+    // disable addons
     let disabled_addons = [
         'firefox@getpocket.com',
         'gmp-gmpopenh264',
