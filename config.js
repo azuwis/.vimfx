@@ -168,7 +168,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     vimfx.send(vim, 'getSelection', {}, selection => {
         let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
-        let title = vim.window.document.title.replace(/ - \w+$/, '')
+        let title = vim.window.gBrowser.contentDocument.title
         let org_url = `org-protocol://capture://b/${encodeURIComponent(url)}/${encodeURIComponent(title)}/${encodeURIComponent(selection)}`
         exec('emacsclient', [org_url])
     })
