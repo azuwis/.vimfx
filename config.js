@@ -163,6 +163,21 @@ vimfx.addCommand({
 map(',t', 'search_tabs', true)
 
 vimfx.addCommand({
+    name: 'toggle_https',
+    description: 'Toggle HTTPS',
+    category: 'location',
+}, ({vim}) => {
+    let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
+    if (url.startsWith('http://')) {
+        url = url.replace(/^http:\/\//, 'https://')
+    } else if (url.startsWith('https://')) {
+        url = url.replace(/^https:\/\//, 'http://')
+    }
+    vim.window.gBrowser.loadURI(url)
+})
+map('gs', 'toggle_https', true)
+
+vimfx.addCommand({
     name: 'org_capture',
     description: 'Capture the selected text using org-protocol'
 }, ({vim}) => {
