@@ -111,6 +111,14 @@ vimfx.addCommand({
 map(',d', 'goto_downloads', true)
 
 vimfx.addCommand({
+    name: 'goto_preferences',
+    description: 'Preferences',
+}, ({vim}) => {
+    vim.window.openPreferences()
+})
+map('gp', 'goto_preferences', true)
+
+vimfx.addCommand({
     name: 'midnight',
     description: 'Midnight Surfing',
 }, ({vim}) => {
