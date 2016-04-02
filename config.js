@@ -72,6 +72,7 @@ set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
 map('', 'window_new')
 map('w', 'tab_select_previous')
 map('e', 'tab_select_next')
+map('S', 'stop')
 
 // commands
 vimfx.addCommand({
@@ -83,7 +84,7 @@ vimfx.addCommand({
         vim.window.BrowserSearch.loadSearch(selection, inTab)
     })
 })
-map(',s', 'search_selected_text', true)
+map('s', 'search_selected_text', true)
 
 vimfx.addCommand({
     name: 'goto_addons',
@@ -116,7 +117,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     vim.window.openPreferences()
 })
-map('gp', 'goto_preferences', true)
+map(',s', 'goto_preferences', true)
 
 vimfx.addCommand({
     name: 'midnight',
