@@ -227,7 +227,7 @@ let bootstrap = () => {
         {id: 'ClassicThemeRestorer@ArisT2Noia4dev', url: 'classicthemerestorer'},
         {id: 'thefoxonlybetter@quicksaver', url: 'the-fox-only-better'}
     ]
-    addons.forEach((element, index, array) => {
+    addons.forEach((element) => {
         AddonManager.getAddonByID(element.id, (addon) => {
             if(!addon) {
                 let url = element.url
@@ -273,7 +273,7 @@ let bootstrap = () => {
         {keyword: 'db', title: 'Debian Bug Search', url: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%s'},
     ]
     let bookmarks = PlacesUtils.bookmarks
-    search_engines.forEach((element, index, array) => {
+    search_engines.forEach((element) => {
         let uri = NetUtil.newURI(element.url, null, null)
         if (!bookmarks.isBookmarked(uri)) {
             bookmarks.insertBookmark(
