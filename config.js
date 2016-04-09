@@ -299,3 +299,19 @@ vimfx.addCommand({
     vim.notify('Bootstrap succeeded')
 })
 map('zb', 'bootstrap', true)
+
+let bootstrapIfNeeded = () => {
+    let bootstrapFile = OS.Path.fromFileURI(`${__dirname}/config.js`)
+    let bootstrapPref = "extensions.VimFx.bootstrapTime"
+    let file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsIFile)
+    file.initWithPath(bootstrapFile)
+    if (file.exists() && file.isFile() && file.isReadable()) {
+        let mtime = Math.floor(file.lastModifiedTime / 1000)
+        let btime = Preferences.get(bootstrapPref)
+        if (!btime || mtime > btime) {
+            bootstrap()
+            Preferences.set(bootstrapPref, Math.floor(Date.now() / 1000))
+        }
+    }
+}
+bootstrapIfNeeded()
