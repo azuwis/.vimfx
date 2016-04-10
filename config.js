@@ -243,10 +243,15 @@ vimfx.addCommand({
         }
         let externalLists = document.querySelector('textarea#externalLists')
         externalLists.value = customFilters.join("\n")
-        let externalListsApply = document.querySelector('button#externalListsApply')
-        if (externalListsApply && !externalListsApply.disabled)
-            externalListsApply.click()
-        let button = document.querySelector('button#buttonApply')
+        let button = document.querySelector('button#externalListsApply')
+        if (button) {
+            button.disabled = false
+            button.click()
+        }
+        button = document.querySelector('button#buttonApply')
+        if(button)
+            button.click()
+        button = document.querySelector('button#buttonUpdate')
         if(button)
             button.click()
     }, true)
