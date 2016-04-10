@@ -214,7 +214,7 @@ vimfx.addCommand({
     let gBrowser = vim.window.gBrowser
     let ublockTab = gBrowser.addTab('chrome://ublock0/content/3p-filters.html')
     let window = gBrowser.getBrowserForTab(ublockTab)
-    window.addEventListener('load', () => {
+    let ublockBootstrap = () => {
         let filters = {
             'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt': 'enable',
             'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt': 'enable',
@@ -254,8 +254,13 @@ vimfx.addCommand({
         button = document.querySelector('button#buttonUpdate')
         if(button)
             button.click()
-    }, true)
-    // gBrowser.selectedTab = ublockTab
+    }
+    window.addEventListener('load', () => {
+        ublockBootstrap()
+        vim.window.setTimeout(ublockBootstrap, 5000)
+        vim.window.setTimeout(ublockBootstrap, 10000)
+    } , true)
+    gBrowser.selectedTab = ublockTab
 })
 map('zu', 'ublock_bootstrap', true)
 
