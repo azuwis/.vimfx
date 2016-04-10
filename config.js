@@ -207,6 +207,53 @@ vimfx.addCommand({
 })
 map(',R', 'restart', true)
 
+vimfx.addCommand({
+    name: 'ublock_bootstrap',
+    description: 'uBlock Bootstrap',
+}, ({vim}) => {
+    let gBrowser = vim.window.gBrowser
+    let ublockTab = gBrowser.addTab('chrome://ublock0/content/3p-filters.html')
+    let window = gBrowser.getBrowserForTab(ublockTab)
+    window.addEventListener('load', () => {
+        let filters = {
+            'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt': 'enable',
+            'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt': 'enable',
+            'https://easylist-downloads.adblockplus.org/easylistchina.txt': 'enable'
+        }
+        let customFilters = [
+            'https://github.com/azuwis/org/raw/master/adblock-filters.txt'
+        ]
+        let document = window.contentDocument
+        let lists = document.querySelectorAll('li .listEntry')
+        for (let item of lists) {
+            let a = item.querySelector('a[data-listkey]')
+            if (a) {
+                let key = a.getAttribute('data-listkey')
+                if (key) {
+                    let value = filters[key]
+                    if (value) {
+                        let checkbox = item.querySelector('input[type="checkbox"]')
+                        if (checkbox) {
+                            if ((value === 'enable' && !checkbox.checked) || (value === 'disable' && checkbox.checked))
+                                checkbox.click()
+                        }
+                    }
+                }
+            }
+        }
+        let externalLists = document.querySelector('textarea#externalLists')
+        externalLists.value = customFilters.join("\n")
+        let externalListsApply = document.querySelector('button#externalListsApply')
+        if (externalListsApply && !externalListsApply.disabled)
+            externalListsApply.click()
+        let button = document.querySelector('button#buttonApply')
+        if(button)
+            button.click()
+    }, true)
+    // gBrowser.selectedTab = ublockTab
+})
+map('zu', 'ublock_bootstrap', true)
+
 let bootstrap = () => {
     // set font for different OSes
     switch (nsIXULRuntime.OS) {
