@@ -283,9 +283,11 @@ let bootstrap = () => {
         {id: 'ClassicThemeRestorer@ArisT2Noia4dev', url: 'classicthemerestorer'},
         {id: 'thefoxonlybetter@quicksaver', url: 'the-fox-only-better'}
     ]
+    let addonsInstalled = false
     addons.forEach((element) => {
         AddonManager.getAddonByID(element.id, (addon) => {
             if(!addon) {
+                addonsInstalled = true
                 let url = element.url
                 if(!url.startsWith('https://')) {
                     url = 'https://addons.mozilla.org/firefox/downloads/latest/' + url
@@ -340,13 +342,15 @@ let bootstrap = () => {
         }
         PlacesUtils.keywords.insert(element)
     })
+    return addonsInstalled
 }
 vimfx.addCommand({
     name: 'bootstrap',
     description: 'Bootstrap',
 }, ({vim}) => {
     try {
-        bootstrap()
+        if(bootstrap())
+            vim.window.BrowserOpenAddonsMgr()
     } catch (error) {
         vim.notify('Bootstrap failed')
         console.error(error)
