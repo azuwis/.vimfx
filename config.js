@@ -236,7 +236,7 @@ let ublockBootstrap = (document) => {
     let customFilters = [
         'https://github.com/azuwis/org/raw/master/adblock-filters.txt'
     ]
-    let lists = document.querySelectorAll('li .listEntry')
+    let lists = document.querySelectorAll('#lists li.listEntry')
     for (let item of lists) {
         let key = item.querySelector('a[data-listkey]').getAttribute('data-listkey')
         let value = filters[key]
