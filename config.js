@@ -209,9 +209,11 @@ map(',R', 'restart', true)
 
 let ublockBootstrap = (document) => {
     let filters = {
+        'assets/ublock/experimental.txt': 'enable',
         'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt': 'enable',
         'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt': 'enable',
-        'https://easylist-downloads.adblockplus.org/easylistchina.txt': 'enable'
+        'https://easylist-downloads.adblockplus.org/easylistchina.txt': 'enable',
+        'assets/thirdparties/mirror1.malwaredomains.com/files/justdomains': 'disable'
     }
     let customFilters = [
         'https://github.com/azuwis/org/raw/master/adblock-filters.txt'
