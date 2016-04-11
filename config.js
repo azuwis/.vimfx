@@ -218,19 +218,12 @@ let ublockBootstrap = (document) => {
     ]
     let lists = document.querySelectorAll('li .listEntry')
     for (let item of lists) {
-        let a = item.querySelector('a[data-listkey]')
-        if (a) {
-            let key = a.getAttribute('data-listkey')
-            if (key) {
-                let value = filters[key]
-                if (value) {
-                    let checkbox = item.querySelector('input[type="checkbox"]')
-                    if (checkbox) {
-                        if ((value === 'enable' && !checkbox.checked) || (value === 'disable' && checkbox.checked))
-                            checkbox.click()
-                    }
-                }
-            }
+        let key = item.querySelector('a[data-listkey]').getAttribute('data-listkey')
+        let value = filters[key]
+        if (value) {
+            let checkbox = item.querySelector('input[type="checkbox"]')
+            if ((value === 'enable' && !checkbox.checked) || (value === 'disable' && checkbox.checked))
+                checkbox.click()
         }
     }
     let externalLists = document.querySelector('textarea#externalLists')
