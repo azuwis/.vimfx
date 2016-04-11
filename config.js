@@ -227,18 +227,18 @@ let ublockBootstrap = (document) => {
         }
     }
     let externalLists = document.querySelector('textarea#externalLists')
-    externalLists.value = customFilters.join("\n")
-    let button = document.querySelector('button#externalListsApply')
-    if (button) {
+    let customFiltersString = customFilters.join("\n")
+    if (externalLists.value !== customFiltersString) {
+        externalLists.value = customFiltersString
+        let button = document.querySelector('button#externalListsApply')
         button.disabled = false
         button.click()
     }
-    button = document.querySelector('button#buttonApply')
-    if(button)
+    button = document.querySelector('button#buttonApply:not(.disabled)')
+    if (button)
         button.click()
     button = document.querySelector('button#buttonUpdate')
-    if(button)
-        button.click()
+    button.click()
 }
 vimfx.addCommand({
     name: 'ublock_bootstrap',
