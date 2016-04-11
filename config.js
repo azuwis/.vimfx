@@ -3,6 +3,7 @@
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components
 const nsIEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment)
 const nsIStyleSheetService = Cc['@mozilla.org/content/style-sheet-service;1'].getService(Ci.nsIStyleSheetService)
+const nsIWindowWatcher = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher)
 const nsIXULRuntime = Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULRuntime)
 const {OS} = Cu.import('resource://gre/modules/osfile.jsm')
 
@@ -10,10 +11,27 @@ Cu.import('resource://gre/modules/XPCOMUtils.jsm')
 XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager', 'resource://gre/modules/AddonManager.jsm')
 XPCOMUtils.defineLazyModuleGetter(this, 'NetUtil', 'resource://gre/modules/NetUtil.jsm')
 XPCOMUtils.defineLazyModuleGetter(this, 'PlacesUtils', 'resource://gre/modules/PlacesUtils.jsm')
+XPCOMUtils.defineLazyModuleGetter(this, 'PopupNotifications', 'resource://gre/modules/PopupNotifications.jsm')
 XPCOMUtils.defineLazyModuleGetter(this, 'Preferences', 'resource://gre/modules/Preferences.jsm')
 
 // helper functions
 let {commands} = vimfx.modes.normal
+
+let popup = (message, options) => {
+    let window = nsIWindowWatcher.activeWindow
+    if(!window)
+        return
+    let notify  = new PopupNotifications(window.gBrowser,
+                                         window.document.getElementById('notification-popup'),
+                                         window.document.getElementById('notification-popup-box'))
+    let notification =  notify.show(window.gBrowser.selectedBrowser, 'notify',
+                                    message, null, options, null, {
+                                        popupIconURL: 'chrome://branding/content/icon128.png'
+                                    })
+    window.setTimeout(() => {
+        notification.remove()
+    }, 5000)
+}
 
 let set = (pref, valueOrFunction) => {
     let value = typeof valueOrFunction === 'function'
@@ -334,6 +352,13 @@ let bootstrap = () => {
                 element.title)
         }
         PlacesUtils.keywords.insert(element)
+    })
+    popup('Bootstrap succeeded.', {
+        label: 'Open Addons',
+        accessKey: 'A',
+        callback: () => {
+            nsIWindowWatcher.activeWindow.BrowserOpenAddonsMgr()
+        }
     })
 }
 vimfx.addCommand({
