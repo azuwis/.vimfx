@@ -352,8 +352,8 @@ let bootstrap = () => {
                 uri,
                 bookmarks.DEFAULT_INDEX,
                 element.title)
+            PlacesUtils.keywords.insert(element)
         }
-        PlacesUtils.keywords.insert(element)
     })
     popup('Bootstrap succeeded.', {
         label: 'Open Addons',
