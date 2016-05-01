@@ -165,7 +165,7 @@ vimfx.addCommand({
         }
     })
 })
-map('v', 'mpv_current_href', true)
+map('b', 'mpv_current_href', true)
 
 vimfx.addCommand({
     name: 'mpv_current_tab',
