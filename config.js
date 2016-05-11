@@ -217,6 +217,18 @@ vimfx.addCommand({
 })
 map(',b', 'org_capture', true)
 
+let qrcode = (text) => {
+    exec('sh', ['-c', `qrencode -o- '${text}' | pqiv -i -`])
+}
+vimfx.addCommand({
+    name: 'qrcode',
+    description: 'QRcode'
+}, ({vim}) => {
+    let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
+    qrcode(url)
+})
+map(',q', 'qrcode', true)
+
 vimfx.addCommand({
     name: 'restart',
     description: 'Restart',
