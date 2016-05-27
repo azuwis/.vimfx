@@ -208,9 +208,8 @@ vimfx.addCommand({
     name: 'org_capture',
     description: 'Capture the selected text using org-protocol'
 }, ({vim}) => {
-    vimfx.send(vim, 'getSelection', null, selection => {
+    vimfx.send(vim, 'orgCapture', null, ({title, selection}) => {
         let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
-        let title = vim.window.gBrowser.contentDocument.title
         let org_url = `org-protocol://capture://b/${encodeURIComponent(url)}/${encodeURIComponent(title)}/${encodeURIComponent(selection)}`
         exec('emacsclient', [org_url])
     })

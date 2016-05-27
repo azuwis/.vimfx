@@ -13,3 +13,9 @@ vimfx.listen('getFocusedHref', (data, callback) => {
     }
     callback(href)
 })
+
+vimfx.listen('orgCapture', (data, callback) => {
+    let title = content.document.title
+    let selection = content.getSelection().toString()
+    callback({title, selection})
+})
