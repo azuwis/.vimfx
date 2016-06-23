@@ -308,7 +308,8 @@ let bootstrap = () => {
         {id: 'uBlock0@raymondhill.net', url: 'ublock-origin'},
         {id: 'VimFx@akhodakivskiy.github.com', url: 'vimfx'},
         {id: 'ClassicThemeRestorer@ArisT2Noia4dev', url: 'classicthemerestorer'},
-        {id: 'thefoxonlybetter@quicksaver', url: 'the-fox-only-better'}
+        {id: 'thefoxonlybetter@quicksaver', url: 'the-fox-only-better'},
+        {id: 'jid1-BoFifL9Vbdl2zQ@jetpack', url: 'decentraleyes'}
     ]
     addons.forEach((element) => {
         AddonManager.getAddonByID(element.id, (addon) => {
