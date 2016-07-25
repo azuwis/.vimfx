@@ -324,13 +324,7 @@ let bootstrap = () => {
             }
         })
     })
-    // list addons
-    // AddonManager.getAllAddons((addons) => {
-    //     console.log('List addons:')
-    //     addons.forEach((element) => {
-    //         console.log(JSON.stringify({name: element.name, id: element.id, disabled: element.userDisabled}))
-    //     })
-    // })
+    // Open about:support to see list of addons
     // disable addons
     let disabled_addons = [
         'firefox@getpocket.com',
