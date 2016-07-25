@@ -124,8 +124,8 @@ vimfx.addCommand({
     name: 'goto_downloads',
     description: 'Downloads',
 }, ({vim}) => {
-    // vim.window.document.getElementById('downloads-button').click()
-    vim.window.switchToTabHavingURI('about:downloads', true)
+    // vim.window.switchToTabHavingURI('about:downloads', true)
+    vim.window.DownloadsPanel.showDownloadsHistory()
 })
 map(',d', 'goto_downloads', true)
 
