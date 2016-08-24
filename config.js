@@ -88,8 +88,8 @@ set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
 
 // shortcuts
 map('', 'window_new')
-map('w', 'tab_select_previous')
-map('e', 'tab_select_next')
+map('q', 'tab_select_previous')
+map('w', 'tab_select_next')
 map('S', 'stop')
 
 // commands
@@ -288,7 +288,7 @@ vimfx.addCommand({
         gBrowser.selectedTab = ublockTab
     }
 })
-map('zu', 'ublock_bootstrap', true)
+map(',u', 'ublock_bootstrap', true)
 
 let bootstrap = () => {
     // set font for different OSes
@@ -383,7 +383,7 @@ vimfx.addCommand({
     }
     vim.notify('Bootstrap succeeded')
 })
-map('zb', 'bootstrap', true)
+map(',B', 'bootstrap', true)
 
 let bootstrapIfNeeded = () => {
     let bootstrapFile = OS.Path.fromFileURI(`${__dirname}/config.js`)
