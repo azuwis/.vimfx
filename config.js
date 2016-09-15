@@ -157,7 +157,7 @@ vimfx.addCommand({
     }
     vimfx.send(vim, 'getFocusedHref', null, href => {
         if (href && href.match('^https?://')) {
-            let args = ['--profile=pseudo-gui', '--cache=no', '--fs', href]
+            let args = ['--profile=pseudo-gui', '--fs', href]
             exec('mpv', args, mpv_observer)
             vim.notify(`Mpv: ${href}`)
         } else {
@@ -172,7 +172,7 @@ vimfx.addCommand({
     description: 'Mpv play current tab',
 }, ({vim}) => {
     let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
-    let args = ['--profile=pseudo-gui', '--cache=no', '--fs', url]
+    let args = ['--profile=pseudo-gui', '--fs', url]
     exec('mpv', args)
     vim.notify(`Mpv: ${url}`)
 })
