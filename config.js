@@ -82,7 +82,7 @@ let exec = (cmd, args, observer) => {
 
 // options
 set('prevent_autofocus', true)
-set('hints_sleep', -1)
+set('hints.sleep', -1)
 set('prev_patterns', v => `[上前]\\s*一?\\s*[页张个篇章頁] ${v}`)
 set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
 
