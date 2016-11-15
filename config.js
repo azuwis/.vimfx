@@ -40,13 +40,16 @@ let set = (pref, valueOrFunction) => {
     vimfx.set(pref, value)
 }
 
-let toggleCss = (uriString) => {
+let toggleCss = (uriString, vim) => {
     let uri = Services.io.newURI(uriString, null, null)
     let method = nsIStyleSheetService.AUTHOR_SHEET
+	let basename = OS.Path.basename(uriString)
     if (nsIStyleSheetService.sheetRegistered(uri, method)) {
         nsIStyleSheetService.unregisterSheet(uri, method)
+		vim.notify(`Disable ${basename}`)
     } else {
         nsIStyleSheetService.loadAndRegisterSheet(uri, method)
+		vim.notify(`Enable ${basename}`)
     }
     // vimfx.on('shutdown', () => {
     //     nsIStyleSheetService.unregisterSheet(uri, method)
@@ -142,7 +145,7 @@ vimfx.addCommand({
     name: 'midnight',
     description: 'Midnight Surfing',
 }, ({vim}) => {
-    toggleCss(`${__dirname}/midnight.css`)
+    toggleCss(`${__dirname}/midnight.css`, vim)
 })
 map(',n', 'midnight', true)
 
