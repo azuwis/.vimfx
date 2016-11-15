@@ -150,6 +150,14 @@ vimfx.addCommand({
 map(',n', 'midnight', true)
 
 vimfx.addCommand({
+    name: 'cssfix',
+    description: 'CSS Fix',
+}, ({vim}) => {
+    toggleCss(`${__dirname}/cssfix.css`, vim)
+})
+map(',f', 'cssfix', true)
+
+vimfx.addCommand({
     name: 'mpv_current_href',
     description: 'Mpv play focused href',
 }, ({vim}) => {
