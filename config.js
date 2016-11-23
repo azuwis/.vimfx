@@ -43,13 +43,13 @@ let set = (pref, valueOrFunction) => {
 let toggleCss = (uriString, vim) => {
     let uri = Services.io.newURI(uriString, null, null)
     let method = nsIStyleSheetService.AUTHOR_SHEET
-	let basename = OS.Path.basename(uriString)
+    let basename = OS.Path.basename(uriString)
     if (nsIStyleSheetService.sheetRegistered(uri, method)) {
         nsIStyleSheetService.unregisterSheet(uri, method)
-		vim.notify(`Disable ${basename}`)
+        vim.notify(`Disable ${basename}`)
     } else {
         nsIStyleSheetService.loadAndRegisterSheet(uri, method)
-		vim.notify(`Enable ${basename}`)
+        vim.notify(`Enable ${basename}`)
     }
     // vimfx.on('shutdown', () => {
     //     nsIStyleSheetService.unregisterSheet(uri, method)
