@@ -88,8 +88,17 @@ set('prevent_autofocus', true)
 // set('hints.chars', 'FJDKSLAGHRUEIWONC MV')
 set('hints.sleep', -1)
 set('prev_patterns', v => `[上前]\\s*一?\\s*[页张个篇章頁] ${v}`)
-//set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
-set('next_patterns', '[下后]\s*一?\s*[页张个篇章頁]  next  ›  »  ▶  →  >>  >  older')
+set('next_patterns', v => `[下后]\\s*一?\\s*[页张个篇章頁] ${v}`)
+
+vimfx.addOptionOverrides(
+    [ ({hostname, searchParams}) => hostname === "www.google.com" && !searchParams.get("tbm"), {
+        pattern_selector: "#pnprev, #pnnext",
+        pattern_attrs: ["id"],
+        prev_patterns: [/^pnprev$/],
+        next_patterns: [/^pnnext$/],
+    }
+    ]
+)
 
 // shortcuts
 map('', 'window_new')
