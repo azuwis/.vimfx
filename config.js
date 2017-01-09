@@ -229,7 +229,7 @@ vimfx.addCommand({
 map(',b', 'org_capture', true)
 
 let qrcode = (text) => {
-    exec('sh', ['-c', `qrencode -o- '${text}' | pqiv -i -`])
+    exec('sh', ['-c', `qrencode -o- '${text}' | pqiv -`])
 }
 vimfx.addCommand({
     name: 'qrcode',
