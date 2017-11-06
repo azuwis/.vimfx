@@ -222,7 +222,7 @@ vimfx.addCommand({
 }, ({vim}) => {
     vimfx.send(vim, 'orgCapture', null, ({title, selection}) => {
         let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
-        let org_url = `org-protocol://capture://b/${encodeURIComponent(url)}/${encodeURIComponent(title)}/${encodeURIComponent(selection)}`
+        let org_url = `org-protocol://capture?template=b&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&body=${encodeURIComponent(selection)}`
         exec('emacsclient', [org_url])
     })
 })
