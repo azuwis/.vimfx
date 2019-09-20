@@ -346,31 +346,26 @@ let bootstrap = () => {
             addon.userDisabled = true
         })
     })
-    // hide default search engines except google
-    Services.search.getEngines().forEach((e) => {if(e.name!='Google') e.hidden = true})
     // add custom search engine keywords
     let search_engines = [
-        {keyword: 'g', title:'Google Search', url: 'https://www.google.com/search?q=%s&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
-        {keyword: 'gl', title:'Google Lucky', url: 'https://www.google.com/search?q=%s&ion=0&lr=lang_zh-CN|lang_zh-TW|lang_en&btnI=1'},
-        {keyword: 'ddg', title:'Duckduckgo Search', url: 'https://duckduckgo.com/?q=%s&kf=fw&kj=b2&ks=t&kw=n&ka=g&ko=s&kt=Lucida%20Grande&km=m&k1=-1&kv=1'},
-        {keyword: 'w', title: 'Wikipedia Search', url: 'https://en.wikipedia.org/wiki/Special:Search?search=%s'},
-        {keyword: 't', title: 'Twitter Search', url: 'https://twitter.com/search/%s'},
-        {keyword: 'd', title: 'Debian Package Search', url: 'https://packages.debian.org/search?keywords=%s'},
-        {keyword: 'df', title: 'Debian File Search', url: 'https://packages.debian.org/search?searchon=contents&mode=filename&keywords=%s'},
-        {keyword: 'dfl', title: 'Debian File List', url: 'https://packages.debian.org/sid/all/%s/filelist'},
-        {keyword: 'db', title: 'Debian Bug Search', url: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%s'},
+        {alias: 'g', name:'Google', template: 'https://www.google.com/search?q={searchTerms}&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
+        {alias: 'ddg', name:'DuckDuckGo', template: 'https://duckduckgo.com/?q={searchTerms}&kf=fw&kj=b2&ks=t&kw=n&ka=g&ko=s&kt=Lucida%20Grande&km=m&k1=-1&kv=1'},
+        {alias: 'w', name: 'Wikipedia (en)', template: 'https://en.wikipedia.org/wiki/Special:Search?search={searchTerms}'},
+        {alias: 't', name: 'Twitter', template: 'https://twitter.com/search/{searchTerms}'},
+        {alias: 'd', name: 'Debian packages', template: 'https://packages.debian.org/search?aliass={searchTerms}'},
+        {alias: 'df', name: 'Debian File', template: 'https://packages.debian.org/search?searchon=contents&mode=filename&aliass={searchTerms}'},
+        {alias: 'dfl', name: 'Debian File List', template: 'https://packages.debian.org/sid/all/{searchTerms}/filelist'},
+        {alias: 'db', name: 'Debian Bugs', template: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug={searchTerms}'},
     ]
-    let bookmarks = PlacesUtils.bookmarks
-    search_engines.forEach((element) => {
-        let uri = NetUtil.newURI(element.url, null, null)
-        if (!bookmarks.isBookmarked(uri)) {
-            bookmarks.insertBookmark(
-                bookmarks.unfiledBookmarksFolder,
-                uri,
-                bookmarks.DEFAULT_INDEX,
-                element.title)
-            PlacesUtils.keywords.insert(element)
-        }
+    Services.search.init().then(function() {
+        search_engines.forEach((e) => {
+            let engine = Services.search.getEngineByName(e.name)
+            if (engine) {
+                engine.alias = e.alias
+            } else {
+                Services.search.addEngineWithDetails(e.name, e)
+            }
+        })
     })
     popup('Bootstrap succeeded.', {
         label: 'Open Addons',
