@@ -316,9 +316,7 @@ let bootstrap = () => {
     }
     // install addons
     let addons = [
-        {id: 'https-everywhere@eff.org', url: 'https-everywhere'},
         {id: 'uBlock0@raymondhill.net', url: 'ublock-origin'},
-        {id: 'VimFx@akhodakivskiy.github.com', url: 'vimfx'},
         {id: 'jid1-BoFifL9Vbdl2zQ@jetpack', url: 'decentraleyes'}
     ]
     addons.forEach((element) => {
