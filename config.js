@@ -210,7 +210,7 @@ vimfx.addCommand({
     } else if (url.startsWith('https://')) {
         url = url.replace(/^https:\/\//, 'http://')
     }
-    vim.window.gBrowser.loadURI(url)
+    vim.window.gBrowser.loadURI(url, {triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal()})
 })
 map('gs', 'toggle_https', true)
 
