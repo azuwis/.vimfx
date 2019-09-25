@@ -301,6 +301,8 @@ vimfx.addCommand({
 map(',u', 'ublock_bootstrap', true)
 
 let bootstrap = () => {
+    // whitelist frame.js in content sandbox
+    Preferences.set('security.sandbox.content.read_path_whitelist', OS.Path.fromFileURI(`${__dirname}/frame.js`))
     // set font for different OSes
     switch (nsIXULRuntime.OS) {
     case 'Darwin':
