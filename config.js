@@ -98,7 +98,7 @@ vimfx.addCommand({
     name: 'search_selected_text',
     description: 'Search for the selected text'
 }, ({vim}) => {
-    vimfx.send(vim, 'getSelection', null, selection => {
+    vimfx.send(vim, 'getInfo', null, ({selection}) => {
         let inTab = true // Change to `false` if you’d like to search in current tab.
         vim.window.BrowserSearch.loadSearch(selection, inTab)
     })
@@ -164,7 +164,7 @@ vimfx.addCommand({
                 vim.notify('Mpv: No video')
         }
     }
-    vimfx.send(vim, 'getFocusedHref', null, href => {
+    vimfx.send(vim, 'getInfo', null, ({href}) => {
         if (href && href.match('^https?://')) {
             let args = ['--profile=pseudo-gui', '--fs', href]
             exec('mpv', args, mpv_observer)
@@ -217,8 +217,7 @@ vimfx.addCommand({
     name: 'org_capture',
     description: 'Capture the selected text using org-protocol'
 }, ({vim}) => {
-    vimfx.send(vim, 'orgCapture', null, ({title, selection}) => {
-        let url = vim.window.gBrowser.selectedBrowser.currentURI.spec
+    vimfx.send(vim, 'getInfo', null, ({title, url, selection}) => {
         let org_url = `org-protocol://capture?template=b&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&body=${encodeURIComponent(selection)}`
         exec('emacsclient', [org_url])
     })
