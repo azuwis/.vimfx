@@ -4,7 +4,6 @@ const {classes: Cc, interfaces: Ci, utils: Cu} = Components
 const nsIEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment)
 const nsIStyleSheetService = Cc['@mozilla.org/content/style-sheet-service;1'].getService(Ci.nsIStyleSheetService)
 const nsIWindowWatcher = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher)
-const nsIXULRuntime = Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULRuntime)
 const {OS} = Cu.import('resource://gre/modules/osfile.jsm')
 
 Cu.import('resource://gre/modules/XPCOMUtils.jsm')
@@ -61,7 +60,7 @@ let map = (shortcuts, command, custom=false) => {
 let pathSearch = (bin) => {
     if (OS.Path.split(bin).absolute)
         return bin
-    let pathListSep = (nsIXULRuntime.OS == 'WINNT') ? ';' : ':'
+    let pathListSep = (Services.appinfo.OS == 'WINNT') ? ';' : ':'
     let dirs = nsIEnvironment.get("PATH").split(pathListSep)
     let file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsIFile)
     for (let dir of dirs) {
@@ -304,7 +303,7 @@ let bootstrap = () => {
     // whitelist frame.js in content sandbox
     Preferences.set('security.sandbox.content.read_path_whitelist', OS.Path.fromFileURI(`${__dirname}/frame.js`))
     // set font for different OSes
-    switch (nsIXULRuntime.OS) {
+    switch (Services.appinfo.OS) {
     case 'Darwin':
         Preferences.set('font.name.monospace.x-western', 'Menlo')
         break
