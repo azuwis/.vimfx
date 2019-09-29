@@ -244,56 +244,18 @@ vimfx.addCommand({
 })
 map(',R', 'restart', true)
 
-let ublockBootstrap = (document) => {
-    let filters = {
-        'assets/ublock/experimental.txt': 'enable',
-        'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt': 'enable',
-        // 'https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt': 'enable',
-        'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt': 'enable',
-        'https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt': 'enable',
-        'https://easylist-downloads.adblockplus.org/easylistchina.txt': 'enable',
-        'assets/thirdparties/easylist-downloads.adblockplus.org/easylist.txt': 'disable',
-        'assets/thirdparties/mirror1.malwaredomains.com/files/justdomains': 'disable'
-    }
-    let customFilters = [
-        'https://github.com/azuwis/org/raw/master/adblock-filters.txt'
-    ]
-    let lists = document.querySelectorAll('#lists li.listEntry')
-    for (let item of lists) {
-        let key = item.querySelector('a[data-listkey]').getAttribute('data-listkey')
-        let value = filters[key]
-        if (value) {
-            let checkbox = item.querySelector('input[type="checkbox"]')
-            if ((value === 'enable' && !checkbox.checked) || (value === 'disable' && checkbox.checked))
-                checkbox.click()
-        }
-    }
-    let externalLists = document.querySelector('textarea#externalLists')
-    let customFiltersString = customFilters.join("\n")
-    if (externalLists.value !== customFiltersString) {
-        externalLists.value = customFiltersString
-        let button = document.querySelector('button#externalListsApply')
-        button.disabled = false
-        button.click()
-    }
-    button = document.querySelector('button#buttonApply:not(.disabled)')
-    if (button)
-        button.click()
-    button = document.querySelector('button#buttonUpdate')
-    button.click()
-}
 vimfx.addCommand({
     name: 'ublock_bootstrap',
     description: 'uBlock Bootstrap',
 }, ({vim}) => {
     let gBrowser = vim.window.gBrowser
     let url = gBrowser.selectedBrowser.currentURI.spec
-    let ublockUrl = 'chrome://ublock0/content/3p-filters.html'
-    if (url === ublockUrl) {
-        ublockBootstrap(gBrowser.contentDocument)
+    // let ublockUrl = 'moz-extension://<uuid>/dashboard.html#3p-filters.html'
+    if (url.endsWith('#3p-filters.html')) {
+        vimfx.send(vim, 'ublockBootstrap', null, () => {
+        })
     } else {
-        let ublockTab = gBrowser.addTab(ublockUrl)
-        gBrowser.selectedTab = ublockTab
+        // vim.window.switchToTabHavingURI(ublockUrl, true)
     }
 })
 map(',u', 'ublock_bootstrap', true)
