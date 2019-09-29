@@ -44,8 +44,8 @@ if (content.document.URL.startsWith('moz-extension://') && content.document.URL.
         let buttonApply = document.querySelector('#buttonApply')
         buttonApply.classList.remove('disabled')
         buttonApply.click()
-        let buttonUpdate = document.querySelector('#buttonUpdate')
+        // let buttonUpdate = document.querySelector('#buttonUpdate')
         // buttonUpdate.classList.remove('disabled')
-        buttonUpdate.click()
+        // buttonUpdate.click()
     })
 }
