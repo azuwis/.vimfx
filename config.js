@@ -314,8 +314,8 @@ let bootstrap = () => {
     }
     // install addons
     let addons = [
-        {id: 'uBlock0@raymondhill.net', url: 'ublock-origin'},
-        {id: 'jid1-BoFifL9Vbdl2zQ@jetpack', url: 'decentraleyes'}
+        // {id: 'uBlock0@raymondhill.net', url: 'ublock-origin'},
+        // {id: 'jid1-BoFifL9Vbdl2zQ@jetpack', url: 'decentraleyes'}
     ]
     addons.forEach((element) => {
         AddonManager.getAddonByID(element.id, (addon) => {
