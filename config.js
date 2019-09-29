@@ -99,8 +99,9 @@ vimfx.addCommand({
     description: 'Search for the selected text'
 }, ({vim}) => {
     vimfx.send(vim, 'getInfo', null, ({selection}) => {
-        let inTab = true // Change to `false` if you’d like to search in current tab.
-        vim.window.BrowserSearch.loadSearch(selection, inTab)
+        let {gURLBar} = vim.window
+        gURLBar.value = `g ${selection}`
+        gURLBar.handleCommand(new vim.window.KeyboardEvent('keydown', {altKey: true}))
     })
 })
 map('s', 'search_selected_text', true)
