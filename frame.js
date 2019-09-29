@@ -42,7 +42,7 @@ if (content.document.URL.startsWith('moz-extension://') && content.document.URL.
         let externalListsString = Object.keys(filters).filter(e => e.startsWith('https://') && !handledFilters.includes(e)).join("\n")
         externalLists.value = externalListsString
         let buttonApply = document.querySelector('#buttonApply')
-        buttonApply.disabled = false
+        buttonApply.classList.remove('disabled')
         buttonApply.click()
         let buttonUpdate = document.querySelector('#buttonUpdate')
         // buttonUpdate.classList.remove('disabled')
