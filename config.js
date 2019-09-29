@@ -363,13 +363,13 @@ let bootstrap = () => {
             }
         })
     })
-    popup('Bootstrap succeeded.', {
-        label: 'Open Addons',
-        accessKey: 'A',
-        callback: () => {
-            nsIWindowWatcher.activeWindow.BrowserOpenAddonsMgr()
-        }
-    })
+    // popup('Bootstrap succeeded.', {
+    //     label: 'Open Addons',
+    //     accessKey: 'A',
+    //     callback: () => {
+    //         nsIWindowWatcher.activeWindow.BrowserOpenAddonsMgr()
+    //     }
+    // })
 }
 vimfx.addCommand({
     name: 'bootstrap',
