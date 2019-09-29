@@ -30,7 +30,7 @@ if (content.document.URL.startsWith('moz-extension://') && content.document.URL.
             if (filters.hasOwnProperty(key)) {
                 item.querySelector('input[type="checkbox"]').checked = filters[key]
                 if (key.startsWith('https://')) {
-                    handledCustomFilters.push(key)
+                    handledFilters.push(key)
                 }
             }
         }
