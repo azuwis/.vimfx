@@ -107,6 +107,19 @@ vimfx.addCommand({
 map('s', 'search_selected_text', true)
 
 vimfx.addCommand({
+    name: 'search_in_yuan',
+    description: 'Search in yuan'
+}, ({vim}) => {
+    vimfx.send(vim, 'getInfo', null, ({selection}) => {
+        let {gURLBar} = vim.window
+        gURLBar.value = `g ${selection} usd in yuan`
+        gURLBar.handleCommand(new vim.window.KeyboardEvent('keydown', {altKey: true}))
+    })
+})
+
+map(',y', 'search_in_yuan', true)
+
+vimfx.addCommand({
     name: 'goto_addons',
     description: 'Addons',
 }, ({vim}) => {
