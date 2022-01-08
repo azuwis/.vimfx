@@ -321,14 +321,12 @@ let bootstrap = () => {
     })
     // add custom search engine keywords
     let search_engines = [
-        {alias: 'g', name:'Google', template: 'https://www.google.com/search?q={searchTerms}&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
-        {alias: 'ddg', name:'DuckDuckGo', template: 'https://duckduckgo.com/?q={searchTerms}&kf=fw&kj=b2&ks=t&kw=n&ka=g&ko=s&kt=Lucida%20Grande&km=m&k1=-1&kv=1'},
-        {alias: 'w', name: 'Wikipedia (en)', template: 'https://en.wikipedia.org/wiki/Special:Search?search={searchTerms}'},
-        {alias: 't', name: 'Twitter', template: 'https://twitter.com/search/{searchTerms}'},
-        {alias: 'd', name: 'Debian packages', template: 'https://packages.debian.org/search?aliass={searchTerms}'},
-        {alias: 'df', name: 'Debian File', template: 'https://packages.debian.org/search?searchon=contents&mode=filename&aliass={searchTerms}'},
-        {alias: 'dfl', name: 'Debian File List', template: 'https://packages.debian.org/sid/all/{searchTerms}/filelist'},
-        {alias: 'db', name: 'Debian Bugs', template: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug={searchTerms}'},
+        {alias: 'g', name:'Google', url: 'https://www.google.com/search?q={searchTerms}&ion=0&safe=off&lr=lang_zh-CN|lang_zh-TW|lang_en'},
+        {alias: 'ddg', name:'DuckDuckGo', url: 'https://duckduckgo.com/?q={searchTerms}&kf=fw&kj=b2&ks=t&kw=n&ka=g&ko=s&kt=Lucida%20Grande&km=m&k1=-1&kv=1'},
+        {alias: 'd', name: 'Debian packages', url: 'https://packages.debian.org/search?keywords={searchTerms}'},
+        {alias: 'df', name: 'Debian File', url: 'https://packages.debian.org/search?searchon=contents&mode=filename&keywords={searchTerms}'},
+        {alias: 'dfl', name: 'Debian File List', url: 'https://packages.debian.org/sid/all/{searchTerms}/filelist'},
+        {alias: 'db', name: 'Debian Bugs', url: 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug={searchTerms}'},
     ]
     Services.search.init().then(function() {
         search_engines.forEach((e) => {
@@ -336,7 +334,7 @@ let bootstrap = () => {
             if (engine) {
                 engine.alias = e.alias
             } else {
-                Services.search.addEngineWithDetails(e.name, e)
+                Services.search.addUserEngine(e.name, e.url, e.alias)
             }
         })
     })
