@@ -279,13 +279,14 @@ let bootstrap = () => {
     // Open about:support to see list of addons
     // disable addons
     let disabled_addons = [
-        'firefox@getpocket.com',
+        'addons-search-detection@mozilla.com',
         'gmp-gmpopenh264',
-        'loop@mozilla.org',
+        'webcompat-reporter@mozilla.org',
+        'webcompat@mozilla.org',
     ]
     disabled_addons.forEach((element) => {
         AddonManager.getAddonByID(element, (addon) => {
-            addon.userDisabled = true
+            addon.disable()
         })
     })
     // add custom search engine keywords
