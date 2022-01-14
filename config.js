@@ -2,7 +2,6 @@
 
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components
 const nsIEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment)
-const nsIStyleSheetService = Cc['@mozilla.org/content/style-sheet-service;1'].getService(Ci.nsIStyleSheetService)
 const nsIWindowWatcher = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher)
 const {OS} = Cu.import('resource://gre/modules/osfile.jsm')
 
@@ -35,22 +34,6 @@ let set = (pref, valueOrFunction) => {
         ? valueOrFunction(vimfx.getDefault(pref))
         : valueOrFunction
     vimfx.set(pref, value)
-}
-
-let toggleCss = (uriString, vim) => {
-    let uri = Services.io.newURI(uriString, null, null)
-    let method = nsIStyleSheetService.AUTHOR_SHEET
-    let basename = OS.Path.basename(uriString)
-    if (nsIStyleSheetService.sheetRegistered(uri, method)) {
-        nsIStyleSheetService.unregisterSheet(uri, method)
-        vim.notify(`Disable ${basename}`)
-    } else {
-        nsIStyleSheetService.loadAndRegisterSheet(uri, method)
-        vim.notify(`Enable ${basename}`)
-    }
-    // vimfx.on('shutdown', () => {
-    //     nsIStyleSheetService.unregisterSheet(uri, method)
-    // })
 }
 
 let map = (shortcuts, command, custom=false) => {
@@ -151,22 +134,6 @@ vimfx.addCommand({
     vim.window.openPreferences()
 })
 map(',s', 'goto_preferences', true)
-
-vimfx.addCommand({
-    name: 'midnight',
-    description: 'Midnight Surfing',
-}, ({vim}) => {
-    toggleCss(`${__dirname}/midnight.css`, vim)
-})
-map(',n', 'midnight', true)
-
-vimfx.addCommand({
-    name: 'cssfix',
-    description: 'CSS Fix',
-}, ({vim}) => {
-    toggleCss(`${__dirname}/cssfix.css`, vim)
-})
-map(',f', 'cssfix', true)
 
 vimfx.addCommand({
     name: 'mpv_current_href',
