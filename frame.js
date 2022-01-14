@@ -17,12 +17,11 @@ vimfx.listen('ublockBootstrap', (data, callback) => {
         'easyprivacy': true,
         'easylist': true,
         'CHN-0': true,
-        'CHN-1': true,
         'https://github.com/azuwis/org/raw/master/adblock-filters.txt': true,
     }
     let {document} = content
     document = document.querySelector('iframe').contentWindow.document
-    let lists = document.querySelectorAll('#lists li.listEntry:not(.unused)')
+    let lists = document.querySelectorAll('#lists div.listEntry:not(.unused)')
     let handledFilters = []
     for (let item of lists) {
         let key = item.getAttribute('data-listkey')

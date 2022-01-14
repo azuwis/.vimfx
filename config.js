@@ -231,13 +231,15 @@ vimfx.addCommand({
 }, ({vim}) => {
     let gBrowser = vim.window.gBrowser
     let url = gBrowser.selectedBrowser.currentURI.spec
-    // let ublockUrl = 'moz-extension://<uuid>/dashboard.html#3p-filters.html'
-    if (url.endsWith('#3p-filters.html')) {
-        vimfx.send(vim, 'ublockBootstrap', null, () => {
-        })
-    } else {
-        // vim.window.switchToTabHavingURI(ublockUrl, true)
-    }
+    AddonManager.getAddonByID("uBlock0@raymondhill.net").then(ublock => {
+        let ublockUrl = `${ublock.optionsURL}#3p-filters.html`
+        if (url === ublockUrl) {
+            vimfx.send(vim, 'ublockBootstrap', null, () => {
+            })
+        } else {
+            vim.window.switchToTabHavingURI(ublockUrl, true)
+        }
+    })
 })
 map(',u', 'ublock_bootstrap', true)
 
